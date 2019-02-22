@@ -111,61 +111,77 @@ def remaining_guesses (word, guess, guesses):
             continue
     return guess_tracker
 
-game_on = True
-while game_on:
-    difficulty = input("What difficulty do you want to try (easy, normal, hard): ")
-    difficulty = difficulty.lower()
-    if difficulty == 'easy' or difficulty == 'normal' or difficulty == 'hard':
-        with open("words.txt") as file:
-            #sets the text file above as a long string
-            text = file.read()
-            #will take the long string and separate into a list, and the create a smaller list based on difficulty
-            your_word = difficulty_list(text, difficulty)
-            #will take your list and selects a random word.
-            your_word = random.choice(your_word)
-            print (your_word)
-            #will replace your word with a dict that is filled with '_ '
-            hidden_word = hide_word(your_word)
-            # print (f"{hidden_word}")
-            #will turn your hidden_word dict and turn into a normal string
-            display_word = display_hidden_word(hidden_word)
-            print ("This is your word "+" ".join(display_word))
-            guesses_left = 8
-            guesses = []
-            updated_word = {}
-            #loop that checks over the amount of guesses remaining as well as if the word is completed
-            #Chinh hovered over me to figure out which words items I needed to compare and how to fix a function.
-            while guesses_left != 0 and your_word != display_word:
-                print (f"So far you've guessed: {guesses}")
-                guess = input ("Guess a letter in the mystery word: ")
-                guess = guess.lower()
-                print (len(guess))
-                if len(guess) == 1:
-                    # calls function remaining_guesses to see if your guess was wrong. 
-                    check = remaining_guesses(your_word, guess, guesses)
-                    # print (check)
-                    if check == False:
-                        guesses_left -= 1
-                        print ("You guessed incorreclty")
-                    if did_you_guess_it(your_word, guess, guesses) == True:
-                        guesses.append(guess)
-                    print (f"You have {guesses_left} guesses remaining.")
+def continue_play ():
+    play_again = input ("Do you want to play again? (y/n or yes/no)")
+    play_again = play_again.lower()
+    if play_again == "y" or play_again == "yes":
+        print ("Very well, let's go...")
+        return True
+    if play_again == "n" or play_again == "no":
+        print ("See you next time.")
+        return False 
 
-                    #this will take the guess input and the random word and see if the letter is available. It will update the dict.
-                    updated_word = update_hidden_word(hidden_word, your_word, guess)
-                    # print (updated_word)
-                    # print (display_word)
-                    display_word = display_hidden_word(updated_word)
-                    print (" ".join(display_word))
-                else:
-                    print ("Please try again. This time only enter one letter.")
-        game_on = False
-    else:
-        print ("Please re-enter the difficulty.")
-if guesses_left != 0 and your_word == display_word:        
-    print ("You got it! Great job!")
-if guesses_left == 0:
-    print ("You lose! You get nothing!")
+
+game_again = True
+while game_again:
+    game_on = True
+    while game_on:
+        difficulty = input("What difficulty do you want to try (easy, normal, hard): ")
+        difficulty = difficulty.lower()
+        #if the difficulty input matches the proper ask, it will go through the function
+        if difficulty == 'easy' or difficulty == 'normal' or difficulty == 'hard':
+            with open("words.txt") as file:
+                #sets the text file above as a long string
+                text = file.read()
+                #will take the long string and separate into a list, and the create a smaller list based on difficulty
+                your_word = difficulty_list(text, difficulty)
+                #will take your list and selects a random word.
+                your_word = random.choice(your_word)
+                print (your_word)
+                #will replace your word with a dict that is filled with '_ '
+                hidden_word = hide_word(your_word)
+                # print (f"{hidden_word}")
+                #will turn your hidden_word dict and turn into a normal string
+                display_word = display_hidden_word(hidden_word)
+                print ("This is your word "+" ".join(display_word))
+                guesses_left = 8
+                guesses = []
+                updated_word = {}
+                #loop that checks over the amount of guesses remaining as well as if the word is completed
+                #Chinh hovered over me to figure out which words items I needed to compare and how to fix a function.
+                while guesses_left != 0 and your_word != display_word:
+                    print (f"So far you've guessed: {guesses}")
+                    guess = input ("Guess a letter in the mystery word: ")
+                    guess = guess.lower()
+                    print (len(guess))
+                    if len(guess) == 1:
+                        # calls function remaining_guesses to see if your guess was wrong. 
+                        check = remaining_guesses(your_word, guess, guesses)
+                        # print (check)
+                        if check == False:
+                            guesses_left -= 1
+                            print ("You guessed incorreclty")
+                        if did_you_guess_it(your_word, guess, guesses) == True:
+                            guesses.append(guess)
+                        print (f"You have {guesses_left} guesses remaining.")
+
+                        #this will take the guess input and the random word and see if the letter is available. It will update the dict.
+                        updated_word = update_hidden_word(hidden_word, your_word, guess)
+                        # print (updated_word)
+                        # print (display_word)
+                        display_word = display_hidden_word(updated_word)
+                        print (" ".join(display_word))
+                    else:
+                        print ("Please try again. This time only enter one letter.")
+            game_on = False
+        else:
+            print ("Please re-enter the difficulty.")
+        if guesses_left != 0 and your_word == display_word:        
+            print ("You got it! Great job!")           
+            game_again = continue_play()
+        if guesses_left == 0:
+            print ("You lose! You get nothing!")
+            game_again = continue_play()
 
 #USEFUL CODE:
 # word = "MAGNITUDE"
