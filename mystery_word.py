@@ -113,8 +113,7 @@ def remaining_guesses (word, guess, guesses):
 
 def continue_play ():
     """When the game is over the user will respond if they want to play again. Returns true or false"""
-    play_again = input ("Do you want to play again? (y/n or yes/no)")
-    play_again = play_again.lower()
+    play_again = input ("Do you want to play again? (y/n or yes/no)").lower()
     if play_again == "y" or play_again == "yes":
         print ("Very well, let's go...")
         return True
@@ -129,8 +128,7 @@ while game_again:
     game_on = True
     #while this is true the game will loop through and allow the player to keep guessing
     while game_on:
-        difficulty = input("What difficulty do you want to try (easy, normal, hard): ")
-        difficulty = difficulty.lower()
+        difficulty = input("What difficulty do you want to try (easy, normal, hard): ").lower()
         #if the difficulty input matches the proper ask, it will go through the function
         if difficulty == 'easy' or difficulty == 'normal' or difficulty == 'hard':
             with open("words.txt") as file:
@@ -140,10 +138,8 @@ while game_again:
                 your_word = difficulty_list(text, difficulty)
                 #will take your list and selects a random word.
                 your_word = random.choice(your_word)
-                # print (your_word)
                 #will replace your word with a dict that is filled with '_ '
                 hidden_word = hide_word(your_word)
-                # print (f"{hidden_word}")
                 #will turn your hidden_word dict and turn into a normal string
                 display_word = display_hidden_word(hidden_word)
                 print ("This is your word "+" ".join(display_word))
@@ -154,24 +150,18 @@ while game_again:
                 #Chinh hovered over me to figure out which words items I needed to compare and how to fix a function.
                 while guesses_left != 0 and your_word != display_word:
                     print (f"So far you've guessed: {guesses}")
-                    guess = input ("Guess a letter in the mystery word: ")
-                    guess = guess.lower()
-                    # print (len(guess)) 
+                    guess = input ("Guess a letter in the mystery word: ").lower()
                     if len(guess) == 1:
                         # calls function remaining_guesses to see if your guess was wrong. 
                         check = remaining_guesses(your_word, guess, guesses)
-                        # print (check)
                         if check == False:
                             guesses_left -= 1
                             print ("You guessed incorreclty")
                         if did_you_guess_it(your_word, guess, guesses) == True:
                             guesses.append(guess)
                         print (f"You have {guesses_left} guesses remaining.")
-
                         #this will take the guess input and the random word and see if the letter is available. It will update the dict.
                         updated_word = update_hidden_word(hidden_word, your_word, guess)
-                        # print (updated_word)
-                        # print (display_word)
                         display_word = display_hidden_word(updated_word)
                         print (" ".join(display_word))
                     else:
@@ -187,28 +177,3 @@ while game_again:
             print (f"Your word was {your_word.upper()}")
             game_again = continue_play()
 
-#USEFUL CODE:
-# word = "MAGNITUDE"
-# guesses = ["G", "E", "T"]
-
-# def display_letter(letter, guesses):
-#     if letter in guesses:
-#         return letter 
-#     else:
-#         return "_"
-
-# [display_letter(letter, guesses) 
-#  for letter in word]
-
-# def print_word(word, guesses):
-#     output_letters = [display_letter(letter, guesses) 
-#                       for letter in word]
-#     print(" ".join(output_letters))
-
-# print_word(word, guesses)
-
-# [
-#     word          #collection
-#     for word in words #iteration
-#     if len(word) >= 6 and len(word) <= 8 #selection
-# ]
