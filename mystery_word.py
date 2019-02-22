@@ -83,13 +83,15 @@ def did_you_guess_it(word, guess, guesses):
     for letter in word:
         if letter == guess and guess not in guesses:
             print ("You guessed a letter")
-            break
+            return True
         if letter == guess and guess in guesses:
-            return print ("You already guessed that letter")
-            break
-        if letter != guess :            
+            print ("You already guessed that letter")
+            return False
+        if letter != guess and guess in guesses:
+            return False           
+        if letter != guess:
             continue
-    return guess
+    return True
 
 def remaining_guesses (word, guess, guesses):
     """Will decide if you guessed correctly and a true/false value"""
@@ -101,7 +103,10 @@ def remaining_guesses (word, guess, guesses):
         if letter == guess and guess in guesses:
             guess_tracker = True
             break
-        if letter != guess : 
+        if letter != guess and guess in guesses:
+            guess_tracker = True
+            break    
+        if letter != guess: 
             guess_tracker = False
             continue
     return guess_tracker
@@ -142,7 +147,8 @@ while game_on:
                     if check == False:
                         guesses_left -= 1
                         print ("You guessed incorreclty")
-                    guesses.append(did_you_guess_it(your_word, guess, guesses))
+                    if did_you_guess_it(your_word, guess, guesses) == True:
+                        guesses.append(guess)
                     print (f"You have {guesses_left} guesses remaining.")
 
                     #this will take the guess input and the random word and see if the letter is available. It will update the dict.
@@ -156,7 +162,10 @@ while game_on:
         game_on = False
     else:
         print ("Please re-enter the difficulty.")
-print ("You're done!")
+if guesses_left != 0 and your_word == display_word:        
+    print ("You got it! Great job!")
+if guesses_left == 0:
+    print ("You lose! You get nothing!")
 
 #USEFUL CODE:
 # word = "MAGNITUDE"
