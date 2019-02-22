@@ -79,7 +79,7 @@ def display_hidden_word(hidden_word):
     return display_word
 
 def did_you_guess_it(word, guess, guesses):
-    """Will decide if you guessed correctly and return it to append to a list"""
+    """Will decide if you guessed correctly and return a true/false"""
     for letter in word:
         if letter == guess and guess not in guesses:
             print ("You guessed a letter")
@@ -112,6 +112,7 @@ def remaining_guesses (word, guess, guesses):
     return guess_tracker
 
 def continue_play ():
+    """When the game is over the user will respond if they want to play again. Returns true or false"""
     play_again = input ("Do you want to play again? (y/n or yes/no)")
     play_again = play_again.lower()
     if play_again == "y" or play_again == "yes":
@@ -123,8 +124,10 @@ def continue_play ():
 
 
 game_again = True
+#while this is true the player will keep playing. If they input no when asked, it will end the loop
 while game_again:
     game_on = True
+    #while this is true the game will loop through and allow the player to keep guessing
     while game_on:
         difficulty = input("What difficulty do you want to try (easy, normal, hard): ")
         difficulty = difficulty.lower()
@@ -137,7 +140,7 @@ while game_again:
                 your_word = difficulty_list(text, difficulty)
                 #will take your list and selects a random word.
                 your_word = random.choice(your_word)
-                print (your_word)
+                # print (your_word)
                 #will replace your word with a dict that is filled with '_ '
                 hidden_word = hide_word(your_word)
                 # print (f"{hidden_word}")
@@ -153,7 +156,7 @@ while game_again:
                     print (f"So far you've guessed: {guesses}")
                     guess = input ("Guess a letter in the mystery word: ")
                     guess = guess.lower()
-                    print (len(guess))
+                    # print (len(guess)) 
                     if len(guess) == 1:
                         # calls function remaining_guesses to see if your guess was wrong. 
                         check = remaining_guesses(your_word, guess, guesses)
@@ -181,6 +184,7 @@ while game_again:
             game_again = continue_play()
         if guesses_left == 0:
             print ("You lose! You get nothing!")
+            print (f"Your word was {your_word.upper()}")
             game_again = continue_play()
 
 #USEFUL CODE:
