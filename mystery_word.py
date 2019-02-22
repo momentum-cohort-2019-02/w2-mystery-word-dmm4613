@@ -37,20 +37,17 @@ def difficulty_list(text, difficulty):
     #creates a new list
     new_list = []
     #takes the difficulty and creates a new list of words between 4 and 6 characters
-    if difficulty == "easy":
-        for word in alist:
-            if word != '' and len(word) >= 4 and len(word) <= 6:
-                new_list.append(word)
+    if difficulty == "easy":        
+        new_list = [word for word in alist if word != '' and len(word) >= 4 and len(word) <= 6]        
+        # for word in alist:
+        #     if word != '' and len(word) >= 4 and len(word) <= 6:
+                # new_list.append(word)
     #takes the difficulty and creates a new list of words between 6 and 8 characters
     if difficulty == "normal":
-        for word in alist:
-            if word != '' and len(word) >= 6 and len(word) <= 8:
-                new_list.append(word)
-    #takes the difficulty and creates a new list of words of 8 or more characters
+        new_list = [word for word in alist if word != '' and len(word) >= 6 and len(word) <= 8]
+  #takes the difficulty and creates a new list of words of 8 or more characters
     if difficulty == "hard":
-        for word in alist:
-            if word != '' and len(word) >= 8:
-                new_list.append(word)     
+        new_list = [word for word in alist if word != '' and len(word) >= 8]           
     return new_list           
 
 def hide_word(word):
@@ -65,6 +62,7 @@ def hide_word(word):
 def update_hidden_word(hidden_word, your_word, guess):
     """Given a guess and the hidden_word will check to see if any letter match and replace the value of the '_ ' with the letter"""
     idx = 0    
+    # hidden_word = [letter for letter in your_word if guess == letter and hidden_word[idx] == '_']
     for letter in your_word:
         if guess == letter and hidden_word[idx] == '_':
             hidden_word[idx] = letter
@@ -114,10 +112,10 @@ def remaining_guesses (word, guess, guesses):
 def continue_play ():
     """When the game is over the user will respond if they want to play again. Returns true or false"""
     play_again = input ("Do you want to play again? (y/n or yes/no)").lower()
-    if play_again == "y" or play_again == "yes":
+    if play_again.isalpha() and play_again == "y" or play_again == "yes":
         print ("Very well, let's go...")
         return True
-    if play_again == "n" or play_again == "no":
+    if play_again.isalpha() and play_again == "n" or play_again == "no":
         print ("See you next time.")
         return False 
 
@@ -130,7 +128,7 @@ while game_again:
     while game_on:
         difficulty = input("What difficulty do you want to try (easy, normal, hard): ").lower()
         #if the difficulty input matches the proper ask, it will go through the function
-        if difficulty == 'easy' or difficulty == 'normal' or difficulty == 'hard':
+        if difficulty.isalpha() and difficulty == 'easy' or difficulty == 'normal' or difficulty == 'hard':
             with open("words.txt") as file:
                 #sets the text file above as a long string
                 text = file.read()
@@ -151,7 +149,7 @@ while game_again:
                 while guesses_left != 0 and your_word != display_word:
                     print (f"So far you've guessed: {guesses}")
                     guess = input ("Guess a letter in the mystery word: ").lower()
-                    if len(guess) == 1:
+                    if guess.isalpha() and len(guess) == 1:
                         # calls function remaining_guesses to see if your guess was wrong. 
                         check = remaining_guesses(your_word, guess, guesses)
                         if check == False:
@@ -169,11 +167,11 @@ while game_again:
             game_on = False
         else:
             print ("Please re-enter the difficulty.")
-        if guesses_left != 0 and your_word == display_word:        
-            print ("You got it! Great job!")           
-            game_again = continue_play()
-        if guesses_left == 0:
-            print ("You lose! You get nothing!")
-            print (f"Your word was {your_word.upper()}")
-            game_again = continue_play()
+    if guesses_left != 0 and your_word == display_word:        
+        print ("You got it! Great job!")           
+        game_again = continue_play()
+    if guesses_left == 0:
+        print ("You lose! You get nothing!")
+        print (f"Your word was {your_word.upper()}")
+        game_again = continue_play()
 
